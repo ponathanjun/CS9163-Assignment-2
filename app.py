@@ -74,6 +74,8 @@ def spell_check():
             with open("test.txt", "w+") as fo:
                 fo.write(textout)
             misspelled = subprocess.check_output(["./a.out", "test.txt", "wordlist.txt"])
+            misspelled = misspelled.decode('utf-8').strip().split('\n')
+            misspelled = ", ".join(misspelled)
             fo.close()
             os.remove("test.txt")
         return render_template("spell_check.html", textout = textout, misspelled = misspelled)

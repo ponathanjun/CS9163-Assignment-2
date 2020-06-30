@@ -10,11 +10,15 @@ Add text here!
 </form>
 <br><br>
 {% if textout %}
-<div style = "color: black">Text: {{ textout }}</div>
+<div style = "color: black">Text:</div>
+<br>
+<div style = "color: black">{{ textout }}</div>
 <br><br>
+<div style = "color: black">Misspelled words:</div>
+<br>
 {% endif %}
 {% if misspelled %}
-<div style = "color: black">Misspelled words: {{ misspelled }}</div>
+<div style = "color: black">{{ misspelled }}</div>
 {% endif %}
 {% endblock %}
 
