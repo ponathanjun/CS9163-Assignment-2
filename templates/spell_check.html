@@ -5,6 +5,7 @@
 Add text here!
 <br><br>
 <form name="spell_check" id="spell_check" action="/spell_check" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <textarea id="inputtext" name="inputtext" rows="10" cols="50" style="border-style: groove" type='text' required></textarea></p>
     <button id="spellcheckbutton" type="submit">Spell Check</button>
 </form>
