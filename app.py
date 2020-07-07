@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 import os
 import subprocess
+import bleach
 
 def create_app():
     app = Flask(__name__)
@@ -32,9 +33,9 @@ def create_app():
         success = ""
         if 'username' not in session:
             if request.method == 'POST':
-                uname = request.form['uname']
-                pword = request.form['pword']
-                twofa = request.form['2fa']
+                uname = bleach.clean(request.form['uname'])
+                pword = bleach.clean(request.form['pword'])
+                twofa = bleach.clean(request.form['2fa'])
                 status = register_with_user_info(uname, pword, twofa)
                 if status == 0:
                     success = "Registration Success!"
@@ -50,9 +51,9 @@ def create_app():
         result = ""
         if 'username' not in session:
             if request.method == 'POST':
-                uname = request.form['uname']
-                pword = request.form['pword']
-                twofa = request.form['2fa']
+                uname = bleach.clean(request.form['uname'])
+                pword = bleach.clean(request.form['pword'])
+                twofa = bleach.clean(request.form['2fa'])
                 status = login_with_user_info(uname, pword, twofa)
                 if status == 2:
                     result = "Incorrect username or password!"
@@ -72,7 +73,7 @@ def create_app():
             textout = ""
             misspelled = ""
             if request.method == 'POST':
-                textout = request.form['inputtext']
+                textout = bleach.clean(request.form['inputtext'])
                 with open("test.txt", "w+") as fo:
                     fo.write(textout)
                 misspelled = subprocess.check_output(["./a.out", "test.txt", "wordlist.txt"])
