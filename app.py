@@ -2,11 +2,13 @@ from flask import Flask, render_template, redirect, url_for, request, session
 import os
 import subprocess
 import bleach
+from flask_wtf.csrf import CSRFProtect
 
 def create_app():
     app = Flask(__name__)
     # os.urandom(24) generated key
     app.secret_key = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
+    csrf = CSRFProtect(app)
     information = {}
     
     def register_with_user_info(uname, pword, twofa):

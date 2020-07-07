@@ -1,5 +1,7 @@
 flask
 pytest
 bleach
+Flask-WTF
 tox
 tox-travis
+
