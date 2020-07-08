@@ -3,6 +3,7 @@ import os
 import subprocess
 import bleach
 from flask_wtf.csrf import CSRFProtect
+import bcrypt
 
 def create_app():
     app = Flask(__name__)
@@ -13,16 +14,18 @@ def create_app():
     
     def register_with_user_info(uname, pword, twofa):
         if uname not in information:
-            information[uname] = [pword, twofa]
+            hashed_pword = bcrypt.hashpw(pword.encode('utf8'), bcrypt.gensalt())
+            hashed_twofa = bcrypt.hashpw(twofa.encode('utf8'), bcrypt.gensalt())
+            information[uname] = [hashed_pword, hashed_twofa]
             return 0
         else:
             return 1
     def login_with_user_info(uname, pword, twofa):
         if uname not in information:
             return 2
-        if pword != information[uname][0]:
+        if bcrypt.checkpw(pword.encode('utf8'), information[uname][0]) == False:
             return 2
-        if twofa != information[uname][1]:
+        if bcrypt.checkpw(twofa.encode('utf8'), information[uname][1]) == False:
             return 1
         return 0
 
