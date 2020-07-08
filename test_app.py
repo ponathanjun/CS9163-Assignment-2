@@ -4,6 +4,8 @@ from app import create_app
 @pytest.fixture
 def app():
     app = create_app()
+    # Turn off CSRF to prevent token issues (security tests not needed according to assignment)
+    app.config['WTF_CSRF_ENABLED'] = False
     client = app.test_client()
     return client
 
@@ -20,7 +22,7 @@ def test_home(app):
     
     # After login
     # Register and login
-    app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True) 
+    app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     app.post('/login', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     result = app.get("/", follow_redirects=True)
     # Check if loaded successfully
@@ -110,7 +112,7 @@ def test_spellcheck(app):
     assert b'Home Page' in result.data
 
     # Register and login
-    app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True) 
+    app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     app.post('/login', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
 
     # Check that you can access page after logging in
@@ -136,7 +138,7 @@ def test_logout(app):
     assert b'Home Page' in result.data
 
     # Register and login
-    app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True) 
+    app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     app.post('/login', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
 
     # Check if login is recognized
