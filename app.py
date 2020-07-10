@@ -101,6 +101,16 @@ def create_app():
             session.pop('username', None)
         return redirect(url_for("home"))
 
+    @app.after_request
+    def add_headers(response):
+        response.headers['Strict-Transport-Security'] = "max-age=31536000 ; includeSubDomains"
+        response.headers['Content-Security-Policy'] = "default-src 'self' ; style-src 'self' 'unsafe-inline'"
+        response.headers['Set-Cookie'] = "HTTPOnly ; Secure"
+        response.headers['X-FrameOptions'] = "DENY"
+        response.headers['X-XSS-Protection'] = "1 ; mode=block"
+        response.headers['X-Content-Type-Options'] = "nosniff"
+        return response
+
     return app
 
 if __name__ == "__main__":
