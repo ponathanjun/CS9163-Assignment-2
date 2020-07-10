@@ -7,9 +7,13 @@ import bcrypt
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = os.urandom(32)
+    app.config.update(
+        SECRET_KEY = os.urandom(32),
+        SESSION_COOKIE_HTTPONLY = True,
+        SESSION_COOKIE_SAMESITE = 'Strict',
+        PERMANENT_SESSION_LIFETIME = 600
+    )
     csrf = CSRFProtect(app)
-    
     information = {}
     
     def register_with_user_info(uname, pword, twofa):
@@ -66,6 +70,7 @@ def create_app():
                     result = "Two-factor failure!"
                 else:
                     result = "Success!"
+                    session.permanent = True
                     session['username'] = uname
             return render_template("login.html", id = result)
         else:
