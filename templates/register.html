@@ -3,7 +3,7 @@
 {% block header %}User Registration{% endblock %}
 {% block body %}
 {% if id %}
-<div style = "color: black">{{ id }}</div>
+<div id="success" style = "color: black">{{ id }}</div>
 <br><br>
 {% endif %}
 <form name="register" id="register" action="/register" method="POST">

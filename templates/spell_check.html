@@ -13,13 +13,13 @@ Add text here!
 {% if textout %}
 <div style = "color: black">Text:</div>
 <br>
-<div style = "color: black">{{ textout }}</div>
+<div id="textout" style = "color: black">{{ textout }}</div>
 <br><br>
 <div style = "color: black">Misspelled words:</div>
 <br>
 {% endif %}
 {% if misspelled %}
-<div style = "color: black">{{ misspelled }}</div>
+<div id="misspelled" style = "color: black">{{ misspelled }}</div>
 {% endif %}
 {% endblock %}
 

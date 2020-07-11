@@ -3,7 +3,7 @@
 {% block header %}Login{% endblock %}
 {% block body %}
 {% if id %}
-<div style = "color: black">{{ id }}</div>
+<div id="result" style = "color: black">{{ id }}</div>
 <br><br>
 {% endif %}
 <form name="login" id="login" action="/login" method="POST">
