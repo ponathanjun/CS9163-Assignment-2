@@ -44,14 +44,14 @@ def test_register(app):
     # Check if loaded successfully
     assert result.status_code == 200
     # Check if registration was successful
-    assert b'<div style = "color: black">Registration Success!</div>' in result.data
+    assert b'<div id="success" style = "color: black">Registration Success!</div>' in result.data
 
     # Check if repeated username registration error is working
     result = app.post('/register', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
     # Check if registration was unsuccessful
-    assert b'<div style = "color: black">Registration Failure!</div>' in result.data
+    assert b'<div id="success" style = "color: black">Registration Failure!</div>' in result.data
 
     # Check if loading properly after login
     app.post('/login', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
@@ -59,7 +59,7 @@ def test_register(app):
     # Check if loaded successfully
     assert result.status_code == 200
     # Check if login is recognized
-    assert b'<div style = "color: black">Already logged in!</div>' in result.data
+    assert b'<div id="success" style = "color: black">Already logged in!</div>' in result.data
 
 # Check if login page is working properly
 def test_login(app):
@@ -76,32 +76,32 @@ def test_login(app):
     result = app.post('/login', data = {'uname':"jon", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
-    assert b'<div style = "color: black">Incorrect username or password!</div>' in result.data
+    assert b'<div id="result" style = "color: black">Incorrect username or password!</div>' in result.data
 
     # Check if wrong password is working
     result = app.post('/login', data = {'uname':"jonathan", 'pword':"pass", '2fa':"6316827788"}, follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
-    assert b'<div style = "color: black">Incorrect username or password!</div>' in result.data
+    assert b'<div id="result" style = "color: black">Incorrect username or password!</div>' in result.data
 
     # Check if two factor failure is working
     result = app.post('/login', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827777"}, follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
-    assert b'<div style = "color: black">Two-factor failure!</div>' in result.data
+    assert b'<div id="result" style = "color: black">Two-factor failure!</div>' in result.data
 
     # Check if login is working
     result = app.post('/login', data = {'uname':"jonathan", 'pword':"password", '2fa':"6316827788"}, follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
-    assert b'<div style = "color: black">Success!</div>' in result.data
+    assert b'<div id="result" style = "color: black">Success!</div>' in result.data
 
     # Check if loading properly after login
     result = app.get('/login', follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
     # Check if login is recognized
-    assert b'<div style = "color: black">Already logged in!</div>' in result.data
+    assert b'<div id="result" style = "color: black">Already logged in!</div>' in result.data
 
 # Check that spell check is working properly
 def test_spellcheck(app):
@@ -126,8 +126,9 @@ def test_spellcheck(app):
     # Check if loaded successfully
     assert result.status_code == 200
     assert b'<div style = "color: black">Text:</div>' in result.data
-    assert b'<div style = "color: black">my dawg is kewl.</div>' in result.data
-    assert b'<div style = "color: black">dawg, kewl</div>' in result.data
+    assert b'<div id="textout" style = "color: black">my dawg is kewl.</div>' in result.data
+    assert b'<div style = "color: black">Misspelled words:</div>' in result.data
+    assert b'<div id="misspelled" style = "color: black">dawg, kewl</div>' in result.data
 
 # Check that logout is working properly
 def test_logout(app):
@@ -145,14 +146,14 @@ def test_logout(app):
     result = app.get('/login', follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
-    assert b'<div style = "color: black">Already logged in!</div>' in result.data
+    assert b'<div id="result" style = "color: black">Already logged in!</div>' in result.data
 
     # Check if logout works
     app.get('/logout', follow_redirects=True)
     result = app.get('/login', follow_redirects=True)
     # Check if loaded successfully
     assert result.status_code == 200
-    assert b'<div style = "color: black">Already logged in!</div>' not in result.data
+    assert b'<div id="result" style = "color: black">Already logged in!</div>' not in result.data
 
     
 
